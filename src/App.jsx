@@ -15,7 +15,7 @@ function App() {
   return (
     <div className="app-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
-      <main className="main-content" style={{ flex: 1, marginTop: '80px' }}>
+      <main className="main-content" style={{ flex: 1, marginTop: '1px' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/service" element={<Service />} />

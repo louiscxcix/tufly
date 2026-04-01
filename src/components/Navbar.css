@@ -1,13 +1,14 @@
 .navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 9999;
   padding: 0;
-  background: rgba(10, 13, 26, 0.8);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .navbar-container {
@@ -33,9 +34,9 @@
 }
 
 .nav-link {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.85rem;
-  color: var(--color-text-secondary);
+  color: #fff;
   position: relative;
   padding-bottom: 4px;
 }

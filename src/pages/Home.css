@@ -63,14 +63,13 @@
 
 /* ===== HERO SECTION ===== */
 .tufly-hero {
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 8vw;
   position: relative;
   overflow: hidden;
-  margin-top: 80px;
 }
 
 .hero-bg {

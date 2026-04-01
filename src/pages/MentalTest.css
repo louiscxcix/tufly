@@ -1,6 +1,6 @@
 .mental-test-page {
   font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  background: var(--color-bg-deep);
+  background: transparent;
   color: var(--color-text-primary);
   padding: 32px 16px;
   min-height: calc(100vh - 80px); /* adjust for navbar if needed */

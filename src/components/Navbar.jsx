@@ -47,7 +47,7 @@ const Navbar = () => {
     <nav className="navbar glass-panel">
       <div className="navbar-container container">
         <Link to="/" className="navbar-logo">
-          <img src="/logo.png" alt="TUFLY" className="navbar-logo-img" style={{ height: '40px', width: 'auto' }} />
+          <img src="/logo_white.png" alt="TUFLY" className="navbar-logo-img" style={{ height: '40px', width: 'auto', display: 'block' }} />
         </Link>
         
         <div className={`nav-menu ${isOpen ? 'active' : ''}`}>
