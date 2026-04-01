@@ -1,0 +1,84 @@
+.portfolio-container {
+    padding-top: var(--spacing-4xl);
+    padding-bottom: var(--spacing-4xl);
+}
+
+.portfolio-header {
+    text-align: center;
+    margin-bottom: var(--spacing-3xl);
+    padding: 0 var(--spacing-md);
+}
+
+.portfolio-header .heading-h1 {
+    color: var(--color-white);
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 0 2px 10px rgba(0, 240, 255, 0.2);
+}
+
+.portfolio-header .text-muted {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-xl);
+    padding: 0 var(--spacing-md);
+}
+
+.portfolio-card {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: transform var(--transition-bounce), box-shadow var(--transition-normal);
+}
+
+.portfolio-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: rgba(0, 240, 255, 0.4);
+}
+
+.portfolio-image-placeholder {
+    height: 220px;
+    background: linear-gradient(135deg, rgba(11, 25, 44, 0.8) 0%, rgba(30, 62, 98, 0.8) 100%);
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.category-badge {
+    background: var(--color-primary);
+    color: var(--color-midnight-blue);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 10px rgba(0, 240, 255, 0.3);
+}
+
+.portfolio-content {
+    padding: var(--spacing-lg);
+}
+
+.portfolio-content .heading-h3 {
+    color: var(--color-white);
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-lg);
+}
+
+.portfolio-content .text-muted {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+}
+
+@media (max-width: 768px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+}

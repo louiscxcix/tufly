@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TUFLY — 멘탈을 터프하게</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #0a0d1a;
+  --blue: #1a5cff;
+  --blue-bright: #3d7eff;
+  --silver: #c8d0e0;
+  --white: #f0f4ff;
+  --accent: #00c2ff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--navy);color:var(--white);font-family:'Noto Sans KR',sans-serif;overflow-x:hidden;}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  padding:0 8vw;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 80% 50%, rgba(26,92,255,0.18) 0%, transparent 70%),
+             radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,194,255,0.08) 0%, transparent 60%);
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(26,92,255,0.06) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(26,92,255,0.06) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.hero-tag{font-size:12px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:20px;position:relative;}
+.hero h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(64px,10vw,130px);
+  line-height:.95;
+  position:relative;
+  letter-spacing:2px;
+}
+.hero h1 span{color:var(--blue-bright);}
+.hero-sub{
+  font-size:clamp(14px,1.5vw,18px);
+  font-weight:300;
+  color:var(--silver);
+  margin-top:24px;
+  max-width:480px;
+  line-height:1.8;
+  position:relative;
+}
+.hero-cta{
+  margin-top:36px;position:relative;
+  display:flex;gap:14px;align-items:center;
+}
+.btn-primary{
+  background:var(--blue);color:#fff;
+  padding:14px 36px;border:none;border-radius:4px;
+  font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;letter-spacing:1px;
+  transition:background .2s,transform .2s;
+  text-decoration:none;display:inline-block;
+}
+.btn-primary:hover{background:var(--blue-bright);transform:translateY(-2px);}
+.btn-ghost{
+  color:var(--silver);font-size:13px;font-weight:400;
+  text-decoration:none;letter-spacing:1px;
+  border-bottom:1px solid rgba(200,208,224,0.3);padding-bottom:2px;
+  transition:color .2s;
+}
+.btn-ghost:hover{color:var(--white);}
+
+.hero-stats{
+  position:absolute;right:8vw;bottom:10vh;
+  display:flex;gap:40px;
+}
+.stat-item{text-align:right;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;color:var(--white);}
+.stat-num span{color:var(--blue-bright);}
+.stat-label{font-size:11px;color:var(--silver);letter-spacing:2px;margin-top:4px;}
+
+/* ── SECTION COMMONS ── */
+section{padding:100px 8vw;}
+.section-eyebrow{font-size:11px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:16px;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,64px);line-height:1;margin-bottom:12px;}
+.section-desc{font-size:14px;color:var(--silver);line-height:1.9;max-width:520px;}
+
+/* ── EFFECT SECTION ── */
+.effect-section{background:linear-gradient(135deg,#080b17 0%,#0d1530 100%);position:relative;overflow:hidden;}
+.effect-section::before{
+  content:'';position:absolute;right:-10%;top:-20%;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(26,92,255,0.12) 0%,transparent 70%);
+}
+.effect-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:60px;}
+.effect-visual{
+  display:flex;flex-direction:column;align-items:center;gap:20px;
+}
+.score-comparison{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(26,92,255,0.2);
+  border-radius:16px;padding:40px;width:100%;
+}
+.score-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.score-row:last-child{margin-bottom:0;}
+.score-label{font-size:12px;color:var(--silver);letter-spacing:2px;width:60px;}
+.score-bar-wrap{flex:1;margin:0 16px;height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;}
+.score-bar{height:100%;border-radius:4px;transition:width 1.5s cubic-bezier(.25,.46,.45,.94);}
+.score-bar.before{background:rgba(200,208,224,0.3);width:31%;}
+.score-bar.after{background:linear-gradient(90deg,var(--blue),var(--accent));width:85%;}
+.score-num{font-family:'Bebas Neue',sans-serif;font-size:28px;width:60px;text-align:right;}
+.score-num.before{color:var(--silver);}
+.score-num.after{color:var(--accent);}
+.effect-arrow{font-family:'Bebas Neue',sans-serif;font-size:72px;color:var(--blue-bright);line-height:1;text-align:center;}
+.effect-caption{font-size:13px;color:var(--silver);text-align:center;line-height:1.7;}
+.effect-items{display:flex;flex-direction:column;gap:20px;}
+.effect-item{
+  border-left:2px solid var(--blue);padding-left:20px;
+}
+.effect-item h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+.effect-item p{font-size:13px;color:var(--silver);line-height:1.7;}
+
+/* ── CREDENTIAL BAND ── */
+.cred-band{
+  background:var(--blue);
+  padding:20px 8vw;
+  display:flex;gap:40px;overflow-x:auto;
+  scrollbar-width:none;
+}
+.cred-band::-webkit-scrollbar{display:none;}
+.cred-item{
+  white-space:nowrap;font-size:12px;font-weight:600;letter-spacing:2px;
+  opacity:.9;flex-shrink:0;
+}
+.cred-item::before{content:'✦ ';opacity:.6;}
+
+/* ── REVIEWS ── */
+.reviews-section{background:#070a15;}
+.reviews-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  margin-top:60px;
+}
+.review-card{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:12px;padding:28px;
+  transition:border-color .3s,transform .3s;
+  position:relative;
+}
+.review-card:hover{border-color:rgba(26,92,255,0.4);transform:translateY(-4px);}
+.review-card.featured{
+  grid-column:span 2;
+  background:linear-gradient(135deg,rgba(26,92,255,0.12),rgba(0,194,255,0.05));
+  border-color:rgba(26,92,255,0.3);
+}
+.review-sport{
+  display:inline-block;font-size:10px;letter-spacing:2px;font-weight:700;
+  color:var(--accent);background:rgba(0,194,255,0.1);
+  padding:4px 10px;border-radius:20px;margin-bottom:16px;
+}
+.review-quote{
+  font-size:15px;font-weight:600;line-height:1.7;margin-bottom:16px;
+  color:var(--white);
+}
+.review-card.featured .review-quote{font-size:18px;}
+.review-context{font-size:12px;color:var(--silver);line-height:1.7;}
+.review-dash{
+  position:absolute;top:28px;right:28px;
+  font-family:'Bebas Neue',sans-serif;font-size:60px;
+  color:rgba(26,92,255,0.15);line-height:1;
+}
+
+/* ── IZOF FEATURE ── */
+.izof-section{position:relative;overflow:hidden;}
+.izof-section::after{
+  content:'IZOF';
+  position:absolute;right:-2%;top:50%;transform:translateY(-50%);
+  font-family:'Bebas Neue',sans-serif;font-size:280px;
+  color:rgba(26,92,255,0.05);line-height:1;pointer-events:none;
+}
+.izof-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:60px;}
+.izof-number{
+  font-family:'Bebas Neue',sans-serif;font-size:120px;
+  line-height:1;color:var(--blue-bright);
+}
+.izof-number sup{font-size:48px;vertical-align:top;margin-top:12px;display:inline-block;}
+.izof-desc{margin-top:16px;font-size:14px;color:var(--silver);line-height:1.9;}
+.izof-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;}
+.tag{
+  padding:8px 16px;border:1px solid rgba(26,92,255,0.35);
+  border-radius:30px;font-size:12px;font-weight:600;
+  color:var(--silver);letter-spacing:.5px;
+}
+
+/* ── ACHIEVEMENTS ── */
+.achieve-section{background:#070a15;}
+.achieve-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+  margin-top:60px;
+}
+.achieve-item{
+  background:rgba(255,255,255,0.03);
+  padding:32px 24px;text-align:center;
+  transition:background .3s;
+}
+.achieve-item:hover{background:rgba(26,92,255,0.1);}
+.achieve-icon{font-size:28px;margin-bottom:12px;}
+.achieve-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.4;}
+.achieve-sub{font-size:11px;color:var(--silver);line-height:1.6;}
+
+/* ── PROCESS ── */
+.process-section{overflow:hidden;}
+.process-steps{
+  display:flex;gap:0;margin-top:60px;position:relative;
+}
+.process-steps::before{
+  content:'';position:absolute;top:36px;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--blue),var(--accent));
+  z-index:0;
+}
+.process-step{
+  flex:1;text-align:center;position:relative;z-index:1;
+}
+.step-circle{
+  width:72px;height:72px;border-radius:50%;margin:0 auto 20px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--navy);border:2px solid var(--blue);
+  font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--blue-bright);
+  position:relative;
+}
+.step-circle::before{
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:1px solid rgba(26,92,255,0.2);
+}
+.step-name{font-size:15px;font-weight:700;margin-bottom:8px;}
+.step-detail{font-size:12px;color:var(--silver);line-height:1.7;}
+
+/* ── CTA ── */
+.cta-section{
+  text-align:center;
+  background:linear-gradient(135deg,rgba(26,92,255,0.15) 0%,rgba(0,194,255,0.08) 100%);
+  border-top:1px solid rgba(26,92,255,0.2);
+  border-bottom:1px solid rgba(26,92,255,0.2);
+}
+.cta-section h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,80px);line-height:1;margin-bottom:20px;}
+.cta-section p{font-size:15px;color:var(--silver);margin-bottom:40px;line-height:1.9;}
+.contact-row{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-top:20px;}
+.contact-item{font-size:13px;color:var(--silver);}
+.contact-item strong{color:var(--white);}
+
+/* ── FOOTER ── */
+footer{padding:40px 8vw;border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{opacity:0;animation:fadeUp .8s ease forwards;}
+.fade-up:nth-child(1){animation-delay:.1s;}
+.fade-up:nth-child(2){animation-delay:.25s;}
+.fade-up:nth-child(3){animation-delay:.4s;}
+.fade-up:nth-child(4){animation-delay:.55s;}
+
+@media(max-width:768px){
+  .effect-grid,.izof-grid{grid-template-columns:1fr;}
+  .reviews-grid{grid-template-columns:1fr;}
+  .review-card.featured{grid-column:span 1;}
+  .achieve-grid{grid-template-columns:1fr 1fr;}
+  .hero-stats{position:static;margin-top:48px;flex-direction:column;gap:20px;}
+  .stat-item{text-align:left;}
+  .process-steps{flex-direction:column;gap:24px;}
+  .process-steps::before{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <p class="hero-tag fade-up">TUFLY Mental Training Service</p>
+  <h1 class="fade-up">멘탈을<br/><span>터프하게.</span></h1>
+  <p class="hero-sub fade-up">모든 승리는 심리에서 시작되고,<br/>그 심리는 훈련으로 완성된다.</p>
+  <div class="hero-cta fade-up">
+    <a href="#contact" class="btn-primary">상담 예약하기</a>
+    <a href="#reviews" class="btn-ghost">성과 보기 →</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num"><span>5,000</span>+</div>
+      <div class="stat-label">심리 상담 세션</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num"><span>250</span>+</div>
+      <div class="stat-label">멘탈 콘텐츠 보유</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num"><span>18</span>+</div>
+      <div class="stat-label">프로구단 심리훈련</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CREDENTIAL BAND ── -->
+<div class="cred-band">
+  <span class="cred-item">국내 프로스포츠 최초 스포츠심리상담사</span>
+  <span class="cred-item">IZOF 수행프로파일 우수논문상</span>
+  <span class="cred-item">특허 등록 10-2680767</span>
+  <span class="cred-item">2023 벤처기업 선정</span>
+  <span class="cred-item">2025 문화체육관광부 스포츠산업 초기창업 보육기관</span>
+  <span class="cred-item">인천라이징스타 5기 지원기업</span>
+  <span class="cred-item">스포츠심리학의 정석 세종도서 선정</span>
+</div>
+
+<!-- ── EFFECT SECTION ── -->
+<section class="effect-section" id="effect">
+  <div class="section-eyebrow">Proven Results</div>
+  <div class="section-title">단 1회 교육으로<br/>자기효능감이 달라진다</div>
+  <div class="effect-grid">
+    <div class="effect-visual">
+      <div class="score-comparison">
+        <div class="score-row">
+          <span class="score-label">사용 전</span>
+          <div class="score-bar-wrap"><div class="score-bar before"></div></div>
+          <span class="score-num before">3.1점</span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">사용 후</span>
+          <div class="score-bar-wrap"><div class="score-bar after"></div></div>
+          <span class="score-num after">8.5점</span>
+        </div>
+      </div>
+      <div class="effect-arrow">↑</div>
+      <p class="effect-caption">단 1회의 교육으로 자기효능감<br/>평균 <strong>3.1점 → 8.5점</strong> 향상</p>
+    </div>
+    <div class="effect-items">
+      <div class="effect-item">
+        <h4>자기효능감 향상</h4>
+        <p>단 1회 교육만으로 다양한 영역에서 자기효능감이 현저히 향상됩니다. 사용 전 평균 3.1점에서 8.5점으로 도달.</p>
+      </div>
+      <div class="effect-item">
+        <h4>신기록 예측 100% IZOF</h4>
+        <p>평균 16주 이내 신기록 수립 100% 예측. 스포츠 종목·포지션별 특화된 질문으로 선수 기술, 체력, 심리 항목을 정밀 파악합니다.</p>
+      </div>
+      <div class="effect-item">
+        <h4>개인 & 팀 맞춤형 프로그램</h4>
+        <p>불안 컨트롤, 멘탈 플랜, 주기화 계획, 재집중 계획, 자기암시로 구성된 개인 프로그램과 팀 정체성·응집력·리더십 팀 프로그램.</p>
+      </div>
+      <div class="effect-item">
+        <h4>검증된 상담 프로세스</h4>
+        <p>상담예약 → 초기 면접 & 심리검사 → 멘탈 트레이닝 진행. 터플리 자체 상담 경력 검증 시스템과 교육 제도를 갖춘 전문 상담사 매칭.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REVIEWS ── -->
+<section class="reviews-section" id="reviews">
+  <div class="section-eyebrow">Real Stories</div>
+  <div class="section-title">선수들이 직접 말하는<br/>터플리 효과</div>
+  <div class="section-desc">2007년부터 수천 회의 심리상담 세션과 함께 쌓아온 실제 성과입니다.</div>
+
+  <div class="reviews-grid">
+    <div class="review-card featured">
+      <div class="review-dash">"</div>
+      <span class="review-sport">골프</span>
+      <p class="review-quote">부산에서 왔어요. 우승하려면 성지순례하듯이 골프 멘탈의 메카를 다녀와야 한다고 추천받아서요.</p>
+      <p class="review-context">2등 습관에서 벗어나기 위해 우승을 목표로 특A급 선수의 멘탈을 장착한 후 실제로 우승을 달성한 골퍼 (2017년)</p>
+    </div>
+    <div class="review-card">
+      <div class="review-dash">"</div>
+      <span class="review-sport">취업</span>
+      <p class="review-quote">1,000:1의 경쟁률,<br/>이것도 되네요.</p>
+      <p class="review-context">터플리의 드레스 리허설로 현대자동차 생신직 입사 1,000:1 면접을 뚫고 합격한 취업준비생 (2023년)</p>
+    </div>
+    <div class="review-card">
+      <div class="review-dash">"</div>
+      <span class="review-sport">배구 · KGC인삼공사</span>
+      <p class="review-quote">파이널세트 강자,<br/>5세트 해결사.</p>
+      <p class="review-context">터플리의 '팀 자신감 모듈' 2회 도입 후 언론으로부터 받은 찬사. (2019–2020년)</p>
+    </div>
+    <div class="review-card">
+      <div class="review-dash">"</div>
+      <span class="review-sport">축구 · FC안양</span>
+      <p class="review-quote">심리를 배웠는데 승부가 달라지는 신기한 경험.</p>
+      <p class="review-context">Win Unique·Win Unite·Win Ugly 'U감성 프로젝트' 참가 선수 소감 (2015년) / 이후 2024년 리그 우승</p>
+    </div>
+    <div class="review-card">
+      <div class="review-dash">"</div>
+      <span class="review-sport">바둑 · 프로기사</span>
+      <p class="review-quote">슬럼프를 딛고 우승해서 더 감사합니다.</p>
+      <p class="review-context">LG배 세계 챔피언, 명인, 국수산맥 세계대회 우승, 아시안게임 단체 우승 성과를 낸 프로기사 (2012–현재)</p>
+    </div>
+    <div class="review-card">
+      <div class="review-dash">"</div>
+      <span class="review-sport">군 · 8기동사단</span>
+      <p class="review-quote">이어지는 정훈 프로그램이 이 내용을 덮을 수 없다. 모두 취소한다.</p>
+      <p class="review-context">한미연합훈련 최정예 장병 대상 정신무장 특강 후 8기동사단 사단장 발언 (2024년)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── IZOF ── -->
+<section class="izof-section" id="izof">
+  <div class="section-eyebrow">Core Technology</div>
+  <div class="section-title">특허받은<br/>IZOF 기술력</div>
+  <div class="izof-grid">
+    <div>
+      <div class="izof-number">100<sup>%</sup></div>
+      <p class="izof-desc">
+        IZOF(Individual Zone of Optimal Functioning) 수행프로파일 기법으로 선수 맞춤 최적 수행 구간을 예측합니다.<br/><br/>
+        평균 16주 이내 신기록 수립 100% 예측 달성. 한국스포츠심리학회 우수논문상 수상 연구 기반의 과학적 방법론입니다.
+      </p>
+      <div class="izof-tags">
+        <span class="tag">특허 제 10-2680767 호</span>
+        <span class="tag">선수 기술 · 체력 · 심리 분석</span>
+        <span class="tag">요구수준 vs 현재수준 갭 분석</span>
+        <span class="tag">훈련요구 자동 산출</span>
+      </div>
+    </div>
+    <div>
+      <div style="background:rgba(26,92,255,0.08);border:1px solid rgba(26,92,255,0.2);border-radius:16px;padding:36px;">
+        <p style="font-size:12px;letter-spacing:2px;color:var(--accent);margin-bottom:20px;">IZOF 수행 프로파일 항목</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);">
+            <span style="font-size:13px;">기술 동작</span>
+            <span style="font-size:11px;color:var(--silver);">티샷 · 세컨샷 · 어프로치 · 퍼팅 · 자동 스윙</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);">
+            <span style="font-size:13px;">체력</span>
+            <span style="font-size:11px;color:var(--silver);">유산소 · 근력 · 유연성 · 순발력</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+            <span style="font-size:13px;">심리</span>
+            <span style="font-size:11px;color:var(--silver);">집중 · 감정조절 · 긴장조절 · 자신감 · 이미지</span>
+          </div>
+        </div>
+        <div style="margin-top:24px;padding:16px;background:rgba(0,194,255,0.06);border-radius:8px;border-left:3px solid var(--accent);">
+          <p style="font-size:12px;color:var(--silver);line-height:1.7;">요구 점수와 현재 점수의 차이로 <strong style="color:var(--white);">훈련 우선순위</strong>를 과학적으로 도출합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACHIEVEMENTS ── -->
+<section class="achieve-section" id="achievements">
+  <div class="section-eyebrow">Track Record</div>
+  <div class="section-title">최초와 최고의 타이틀</div>
+  <div class="achieve-grid">
+    <div class="achieve-item">
+      <div class="achieve-icon">🏆</div>
+      <div class="achieve-title">국내 프로스포츠<br/>최초 심리상담사</div>
+      <div class="achieve-sub">FC서울 · 2007년</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-icon">📋</div>
+      <div class="achieve-title">국내 최다<br/>프로구단 심리훈련</div>
+      <div class="achieve-sub">FC서울·GS칼텍스·NC다이노스 외 14개 구단</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-icon">🔬</div>
+      <div class="achieve-title">IZOF 수행프로파일<br/>우수논문상</div>
+      <div class="achieve-sub">한국스포츠심리학회</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-icon">📱</div>
+      <div class="achieve-title">챗GPT 기반<br/>멘탈 앱 Planity</div>
+      <div class="achieve-sub">최고수행 셀프톡 생성</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-icon">⚖️</div>
+      <div class="achieve-title">선수 심리 분석<br/>특허 등록</div>
+      <div class="achieve-sub">제 10-2680767 호</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-icon">📚</div>
+      <div class="achieve-title">스포츠심리학의 정석<br/>세종도서 선정</div>
+      <div class="achieve-sub">멘탈 훈련 이론서</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-icon">🏢</div>
+      <div class="achieve-title">벤처기업 선정 &<br/>정부 지원사업</div>
+      <div class="achieve-sub">2023 벤처 · 2025 문체부 보육기관</div>
+    </div>
+    <div class="achieve-item">
+      <div class="achieve-icon">🌐</div>
+      <div class="achieve-title">스포츠 심리교육<br/>콘텐츠 400건+</div>
+      <div class="achieve-sub">연간 주기화 프로그램</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
+<section class="process-section" id="process">
+  <div class="section-eyebrow">How It Works</div>
+  <div class="section-title">3단계 상담 프로세스</div>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-circle">R</div>
+      <div class="step-name">Reservation</div>
+      <div class="step-detail">전화 또는 온라인으로<br/>상담 예약</div>
+    </div>
+    <div class="process-step">
+      <div class="step-circle">I</div>
+      <div class="step-name">Interview</div>
+      <div class="step-detail">초기 면접 및<br/>심리검사 진행</div>
+    </div>
+    <div class="process-step">
+      <div class="step-circle">T</div>
+      <div class="step-name">Training</div>
+      <div class="step-detail">맞춤형 멘탈<br/>트레이닝 시작</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section" id="contact">
+  <div class="section-eyebrow">Get Started</div>
+  <h2>지금 바로<br/>시작하세요</h2>
+  <p>순간은 짧지만, 순간을 만드는 준비는 길다.<br/>터플리와 함께 그 준비를 시작하세요.</p>
+  <a href="tel:01068023488" class="btn-primary">010.6802.3488 로 전화하기</a>
+  <div class="contact-row">
+    <span class="contact-item"><strong>E-mail</strong> tuflyofficial@gmail.com</span>
+    <span class="contact-item"><strong>Web</strong> www.tufly.co.kr</span>
+    <span class="contact-item"><strong>주소</strong> 인천 미추홀구 인하로 100, 인하대학교 서호관 106호</span>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">TUFLY</div>
+  <div class="footer-copy">© 2024 TUFLY Mental Training Service. All rights reserved.</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>골프 IZOF 수행 프로파일 검사지</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+      padding: 32px 16px;
+    }
+    .container { max-width: 760px; margin: 0 auto; }
+
+    header {
+      background: #1a1a2e;
+      color: white;
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 28px;
+    }
+    header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    header p  { font-size: 13px; opacity: 0.7; line-height: 1.6; }
+
+    .meta-row {
+      display: flex; gap: 16px; margin-bottom: 28px;
+    }
+    .meta-row label { font-size: 13px; font-weight: 600; }
+    .meta-row input {
+      border: 1px solid #dde3ed;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      width: 100%;
+    }
+    .meta-field { flex: 1; }
+
+    .section-card {
+      background: white;
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8ecf4;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title .badge {
+      background: #1a1a2e;
+      color: white;
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .item { margin-bottom: 24px; }
+    .item:last-child { margin-bottom: 0; }
+    .item-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .item-desc {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 48px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .score-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+    }
+    .score-label.req  { color: #2563eb; }
+    .score-label.curr { color: #16a34a; }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type=range].req-slider  { background: linear-gradient(to right, #2563eb var(--val, 0%), #dde3ed var(--val, 0%)); }
+    input[type=range].curr-slider { background: linear-gradient(to right, #16a34a var(--val, 0%), #dde3ed var(--val, 0%)); }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+    input[type=range].req-slider::-webkit-slider-thumb  { background: #2563eb; }
+    input[type=range].curr-slider::-webkit-slider-thumb { background: #16a34a; }
+
+    .score-value {
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      width: 40px;
+    }
+    .score-value.req  { color: #2563eb; }
+    .score-value.curr { color: #16a34a; }
+
+    .training-need {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .training-need span { font-size: 12px; color: #888; }
+    .need-badge {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 20px;
+      background: #f1f5f9;
+      color: #1a1a2e;
+    }
+    .need-badge.high   { background: #fef2f2; color: #dc2626; }
+    .need-badge.medium { background: #fefce8; color: #ca8a04; }
+    .need-badge.low    { background: #f0fdf4; color: #16a34a; }
+
+    .divider { border: none; border-top: 1px dashed #e8ecf4; margin: 16px 0; }
+
+    .summary-card {
+      background: #1a1a2e;
+      color: white;
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+    }
+    .summary-card h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; opacity: 0.9; }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .summary-item {
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    .summary-item .label { font-size: 11px; opacity: 0.6; margin-bottom: 4px; }
+    .summary-item .val   { font-size: 20px; font-weight: 700; }
+
+    .top-needs h3 { font-size: 13px; opacity: 0.7; margin-bottom: 10px; }
+    .top-need-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 8px 14px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .top-need-item .name  { font-weight: 600; }
+    .top-need-item .score { font-weight: 700; color: #f87171; }
+
+    .btn-row { display: flex; gap: 10px; margin-top: 20px; }
+    .btn {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary   { background: #2563eb; color: white; }
+    .btn-secondary { background: rgba(255,255,255,0.12); color: white; }
+
+    .range-hint {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #bbb;
+      margin-top: -4px;
+      margin-bottom: 6px;
+      padding: 0 2px;
+    }
+
+    @media (max-width: 500px) {
+      .summary-grid { grid-template-columns: 1fr 1fr; }
+      .meta-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>🏌️ 골프 IZOF 수행 프로파일 검사지</h1>
+    <p>
+      <strong>요구</strong> = 시합 때 필요한 이상적인 수준 &nbsp;|&nbsp;
+      <strong>현재</strong> = 내가 생각하는 현재 수준<br/>
+      <strong>훈련요구</strong> = 요구 − 현재 (높을수록 우선 훈련 필요)
+    </p>
+  </header>
+
+  <div class="meta-row">
+    <div class="meta-field">
+      <label>이름</label>
+      <input type="text" id="name" placeholder="홍길동" />
+    </div>
+    <div class="meta-field">
+      <label>날짜</label>
+      <input type="date" id="date" />
+    </div>
+  </div>
+
+  <!-- ────────────── 1. 기술 동작 ────────────── -->
+  <div class="section-card">
+    <div class="section-title">
+      <span class="badge">1</span> 기술 동작
+    </div>
+
+    <div class="item" data-key="tee_shot">
+      <div class="item-name">티샷 정확성</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="second_shot">
+      <div class="item-name">세컨샷 핀에 좀더 가까이 붙이기</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="approach">
+      <div class="item-name">어프로치 정확성</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="long_putt">
+      <div class="item-name">롱 퍼팅</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="short_putt">
+      <div class="item-name">숏 퍼팅</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="auto_swing">
+      <div class="item-name">본능적 / 자동적 스윙</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div>
+  </div>
+
+  <!-- ────────────── 2. 체력 ────────────── -->
+  <div class="section-card">
+    <div class="section-title">
+      <span class="badge">2</span> 체력
+    </div>
+
+    <div class="item" data-key="aerobic">
+      <div class="item-name">유산소 체력</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="strength">
+      <div class="item-name">근력</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="flexibility">
+      <div class="item-name">유연성</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="agility">
+      <div class="item-name">순발력</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div>
+  </div>
+
+  <!-- ────────────── 3. 심리 ────────────── -->
+  <div class="section-card">
+    <div class="section-title">
+      <span class="badge">3</span> 심리
+    </div>
+
+    <div class="item" data-key="present_focus">
+      <div class="item-name">현재집중</div>
+      <div class="item-desc">과거·미래 신경 안 쓰기</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="emotion_control">
+      <div class="item-name">감정 / 생각 조절</div>
+      <div class="item-desc">목표에만 집중</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="tension_control">
+      <div class="item-name">긴장조절</div>
+      <div class="item-desc">적당한 긴장 유지 · 시합 전 편안함 · 긍정마음</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="confidence">
+      <div class="item-name">자신감</div>
+      <div class="item-desc">부정적 생각 안 함</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="imagery">
+      <div class="item-name">성공궤적 이미지그리기</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="enjoyment">
+      <div class="item-name">재미 / 즐긴다</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div><hr class="divider"/>
+
+    <div class="item" data-key="dedication">
+      <div class="item-name">헌신 / 집념</div>
+      <div class="score-row">
+        <span class="score-label req">요구</span>
+        <input type="range" class="req-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value req">5</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label curr">현재</span>
+        <input type="range" class="curr-slider" min="1" max="10" value="5" oninput="update(this)" />
+        <span class="score-value curr">5</span>
+      </div>
+      <div class="range-hint"><span>아주 낮음 (1)</span><span>매우 높음 (10)</span></div>
+      <div class="training-need"><span>훈련요구</span><span class="need-badge">0</span></div>
+    </div>
+  </div>
+
+  <!-- ────────────── 결과 요약 ────────────── -->
+  <div class="summary-card" id="summary">
+    <h2>📊 결과 요약</h2>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="label">평균 요구 점수</div>
+        <div class="val" id="avg-req">5.0</div>
+      </div>
+      <div class="summary-item">
+        <div class="label">평균 현재 점수</div>
+        <div class="val" id="avg-curr">5.0</div>
+      </div>
+      <div class="summary-item">
+        <div class="label">평균 훈련요구</div>
+        <div class="val" id="avg-need">0.0</div>
+      </div>
+    </div>
+    <div class="top-needs">
+      <h3>🔥 훈련요구 상위 3개 항목</h3>
+      <div id="top-list"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="copyJSON()">JSON 복사</button>
+      <button class="btn btn-primary" onclick="printResult()">결과 인쇄</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // 항목명 매핑
+  const LABELS = {
+    tee_shot: '티샷 정확성',
+    second_shot: '세컨샷 핀 붙이기',
+    approach: '어프로치 정확성',
+    long_putt: '롱 퍼팅',
+    short_putt: '숏 퍼팅',
+    auto_swing: '본능적/자동적 스윙',
+    aerobic: '유산소 체력',
+    strength: '근력',
+    flexibility: '유연성',
+    agility: '순발력',
+    present_focus: '현재집중',
+    emotion_control: '감정/생각 조절',
+    tension_control: '긴장조절',
+    confidence: '자신감',
+    imagery: '성공궤적 이미지',
+    enjoyment: '재미/즐긴다',
+    dedication: '헌신/집념',
+  };
+
+  function update(slider) {
+    const row = slider.closest('.score-row');
+    const val = parseInt(slider.value);
+    // 퍼센트 업데이트 (슬라이더 채우기)
+    const pct = ((val - 1) / 9 * 100).toFixed(1);
+    slider.style.setProperty('--val', pct + '%');
+    // 숫자 표시
+    const scoreEl = row.querySelector('.score-value');
+    scoreEl.textContent = val;
+    // 훈련요구 재계산
+    const item = slider.closest('.item');
+    recalcItem(item);
+    updateSummary();
+  }
+
+  function recalcItem(item) {
+    const req  = parseInt(item.querySelector('.req-slider').value);
+    const curr = parseInt(item.querySelector('.curr-slider').value);
+    const need = Math.max(0, req - curr);
+    const badge = item.querySelector('.need-badge');
+    badge.textContent = need;
+    badge.className = 'need-badge ' + (need >= 4 ? 'high' : need >= 2 ? 'medium' : 'low');
+  }
+
+  function updateSummary() {
+    const items = document.querySelectorAll('.item');
+    let totalReq = 0, totalCurr = 0, needs = [];
+    items.forEach(item => {
+      const key  = item.dataset.key;
+      const req  = parseInt(item.querySelector('.req-slider').value);
+      const curr = parseInt(item.querySelector('.curr-slider').value);
+      const need = Math.max(0, req - curr);
+      totalReq  += req;
+      totalCurr += curr;
+      needs.push({ key, need });
+    });
+    const n = items.length;
+    document.getElementById('avg-req').textContent  = (totalReq  / n).toFixed(1);
+    document.getElementById('avg-curr').textContent = (totalCurr / n).toFixed(1);
+    document.getElementById('avg-need').textContent = ((totalReq - totalCurr) / n).toFixed(1);
+
+    needs.sort((a, b) => b.need - a.need);
+    const top3 = needs.slice(0, 3);
+    document.getElementById('top-list').innerHTML = top3.map(x =>
+      `<div class="top-need-item">
+        <span class="name">${LABELS[x.key]}</span>
+        <span class="score">${x.need}점</span>
+      </div>`
+    ).join('');
+  }
+
+  function getJSON() {
+    const result = {
+      name: document.getElementById('name').value,
+      date: document.getElementById('date').value,
+      items: {}
+    };
+    document.querySelectorAll('.item').forEach(item => {
+      const key  = item.dataset.key;
+      const req  = parseInt(item.querySelector('.req-slider').value);
+      const curr = parseInt(item.querySelector('.curr-slider').value);
+      result.items[key] = { label: LABELS[key], req, curr, need: Math.max(0, req - curr) };
+    });
+    return result;
+  }
+
+  function copyJSON() {
+    navigator.clipboard.writeText(JSON.stringify(getJSON(), null, 2))
+      .then(() => alert('JSON이 클립보드에 복사되었습니다.'));
+  }
+
+  function printResult() { window.print(); }
+
+  // 초기 슬라이더 색상 반영
+  document.querySelectorAll('input[type=range]').forEach(s => {
+    const pct = ((parseInt(s.value) - 1) / 9 * 100).toFixed(1);
+    s.style.setProperty('--val', pct + '%');
+  });
+  updateSummary();
+</script>
+</body>
+</html>

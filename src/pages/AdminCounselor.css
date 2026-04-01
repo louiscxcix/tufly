@@ -1,0 +1,71 @@
+.admin-container {
+    padding-top: var(--spacing-4xl);
+    padding-bottom: var(--spacing-4xl);
+    min-height: calc(100vh - 80px);
+}
+
+.admin-header {
+    margin-bottom: var(--spacing-3xl);
+}
+
+.admin-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.admin-form-wrapper {
+    position: relative;
+    border-top: 4px solid #F59E0B;
+}
+
+.chip-container.mini {
+    gap: 6px;
+}
+
+.chip-container.mini .chip {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+.json-output-wrapper {
+    position: relative;
+    border-top: 4px solid var(--color-teal);
+}
+
+.json-box {
+    background: #0B192C;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    color: #34D399;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.copy-btn.copied {
+    background: var(--color-teal);
+    border-color: var(--color-teal);
+    color: #0b192c;
+    font-weight: bold;
+}
